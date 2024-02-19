@@ -18,7 +18,7 @@ wss.on("connection", (ws) => {
             wss.clients.forEach(client => client.send(message.toString()));
         } else {
             // Caso contrário, envie uma mensagem informando que a conexão ainda não está completa
-            ws.send({'id': -1, 'message': "A conexão ainda não está completa. Aguarde.");
+            ws.send(JSON.stringify({'id': -1, 'message': "A conexão ainda não está completa. Aguarde."}));
         }
     });
 
