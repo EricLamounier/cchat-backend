@@ -8,8 +8,9 @@ wss.on("connection", (ws) => {
     ws.on("error", console.error);
 
     ws.on("message", (message) => {
-        wss.clients.forEach(client => client.send(JSON.stringify(message.toString())));
-        console.log(JSON.stringify(message.toString()))
+        const msg = message.toString()
+        wss.clients.forEach(client => client.send(msg));
+        console.log(msg);
     });
 
     console.log('connected .');
