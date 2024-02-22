@@ -15,7 +15,7 @@ wss.on("connection", (ws) => {
 
     ws.on("message", (message) => {
         const msgSTRING = message.toString();
-        const msgJSON = msgSTRING.JSON()
+        const msgJSON = JSON.parse(msgSTRING)
         wss.clients.forEach((client) => client.send(msgSTRING));
         console.log(msgJSON);
 
