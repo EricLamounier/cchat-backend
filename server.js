@@ -29,6 +29,12 @@ wss.on("connection", (ws) => {
     const pingInterval = setInterval(() => {
         if (ws.isAlive === false) {
             console.log('Terminating inactive connection');
+
+            const index = onlineUsers.findIndex(user => user.userId === ws.userId);
+            console.log(index)
+            if (index !== -1) {
+                onlineUsers.splice(index, 1);
+            }
             return ws.terminate();
         }
 
