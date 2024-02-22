@@ -34,7 +34,7 @@ wss.on("connection", (ws) => {
 
         ws.isAlive = false;
         ws.ping(null, undefined);
-    }, 10000); // 10 segundos
+    }, 120000); // 120 segundos
 
     // Limpar intervalo quando a conexão é fechada
     ws.on('close', () => {
