@@ -1,4 +1,4 @@
-const { WebSocketServer } = require("ws");
+/*const { WebSocketServer } = require("ws");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -42,6 +42,47 @@ wss.on("connection", (ws, req) => {
 
     // Limpar intervalo quando a conexão é fechada
     ws.on('close', () => {
+        clearInterval(pingInterval);
+    });
+});
+*/
+const { WebSocketServer } = require("ws");
+const dotenv = require("dotenv");
+dotenv.config();
+
+const wss = new WebSocketServer({ port: process.env.PORT || 8080 });
+
+wss.on("connection", (ws) => {
+    ws.isAlive = true;
+
+    ws.on("pong", () => {
+        ws.isAlive = true;
+    });
+
+    ws.on("error", console.error);
+
+    ws.on("message", (message) => {
+        const msg = message.toString();
+        wss.clients.forEach((client) => client.send(msg));
+        console.log(msg);
+    });
+
+    console.log('connected.');
+
+    // Configurar intervalo de ping-pong
+    const pingInterval = setInterval(() => {
+        if (ws.isAlive === false) {
+            console.log('Terminating inactive connection');
+            return ws.terminate();
+        }
+
+        ws.isAlive = false;
+        ws.ping(null, undefined);
+    }, 10000); // 10 segundos
+
+    // Limpar intervalo quando a conexão é fechada
+    ws.on('close', () => {
+        console.log('Terminating inactive connection');
         clearInterval(pingInterval);
     });
 });
