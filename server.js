@@ -15,10 +15,9 @@ wss.on("connection", (ws) => {
     ws.on("error", console.error);
 
     ws.on("message", (message) => {
-        const msgSTRING = message.toString();
-        const msgJSON = JSON.parse(msgSTRING);
+        let content = message.toString();
+        const msgJSON = JSON.parse(content);
         clientID = msgJSON.userID || 0
-        let content = null;
         
         if (msgJSON.messageType == 0){ // Login
             onlineUsers[msgJSON.userID] = ws;
